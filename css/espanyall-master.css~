@@ -1,0 +1,29 @@
+html 
+{ 
+ height: 100%; 
+}
+
+body 
+{ 
+ height: 100%; margin: 0; padding: 0; 
+}
+#map-canvas 
+{ 
+ height: 100%; position: relative; height: 100%; width: 100%; margin-top: 15px;
+}
+#over_map 
+{ 
+ position: absolute; top: 10px; left: 100px; z-index: 99; 
+}
+#wrapper 
+{ 
+ position: relative; height: 100%; width: 100%; z-index: 1; 
+}
+#tacojim 
+{ 
+ height: 150px; width: 400px; background-image:url("../images/logo.png"); box-shadow: 10px 10px 5px #888888; border-radius:25px;
+}
+#container-sizer
+{
+ height: 100%; width: 100%;
+}

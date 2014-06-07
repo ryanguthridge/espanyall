@@ -1,0 +1,136 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+	<title>The world's most premier Tex Mex finding App</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<style type="text/css">
+      html { height: 100%; }
+      body { height: 100%; margin: 0; padding: 0; }
+      #map-canvas { height: 100%; position: relative; height: 100%; width: 100%; }
+	  #over_map { position: absolute; top: 10px; left: 100px; z-index: 99; }
+	  #wrapper { position: relative; height: 100%; width: 100%; z-index: 1; }
+	  #tacojim { height: 300px; width: 800px; background-image:url("images/logo.png"); box-shadow: 10px 10px 5px #888888; border-radius:25px;}
+    </style>
+	
+	<!-- jQuery -->
+	<script src="jquery/jquery-1.11.1.min.js"></script>
+	
+	<!-- Boot Strap -->
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css"></script>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"></script>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css"></script>
+	
+	<!-- Google Maps -->
+	<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCjJpyadaEF7ASmHrLbYrwI5cDF2awQ_Xs&sensor=TRUE">
+    </script>
+    <script>
+	// Note: This example requires that you consent to location sharing when
+	// prompted by your browser. If you see a blank space instead of the map, this
+	// is probably because you have denied permission for location sharing.
+
+		var map;
+		var infowindow;
+		var request;
+
+			function initialize() {
+			  var mapOptions = {
+				zoom: 13
+			  };
+			  map = new google.maps.Map(document.getElementById('map-canvas'),
+				  mapOptions);
+			
+			findCurrentLocation();
+			}
+
+			function findCurrentLocation(){
+				if (navigator.geolocation) {
+					 navigator.geolocation.getCurrentPosition(function (position) {
+						 pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+						 map.setCenter(pos);
+						 findTexMex(pos);
+					 });
+				 }
+			}
+
+			function findTexMex(){
+				var request = {
+				location: pos,
+				rankby: google.maps.places.RankBy.DISTANCE,
+				radius: 500000,
+				types: ['food'],
+				keyword: "texmex",
+				maxprice: 2
+			  };
+			  infowindow = new google.maps.InfoWindow();
+			  var service = new google.maps.places.PlacesService(map);
+			  service.nearbySearch(request, callback);
+			}
+
+			function callback(results, status) {
+			  if (status == google.maps.places.PlacesServiceStatus.OK) {
+				for (var i = 0; i < results.length; i++) {
+				  createMarker(results[i]);
+				}
+			  }
+			}
+
+			function createMarker(place) {
+			  var placeLoc = place.geometry.location;
+			  var marker = new google.maps.Marker({
+				map: map,
+				position: place.geometry.location
+			  });
+
+			  google.maps.event.addListener(marker, 'click', function() {
+				infowindow.setContent(place.name);
+				infowindow.open(map, this);
+			  });
+			}
+			
+			function handleNoGeolocation(errorFlag) {
+				  if (errorFlag) {
+					var content = 'Error: The Geolocation service failed.';
+				  } else {
+					var content = 'Error: Your browser doesn\'t support geolocation.';
+				  }
+
+			  var options = {
+				map: map,
+				position: new google.maps.LatLng(60, 105),
+				content: content
+			  };
+
+			  var infowindow = new google.maps.InfoWindow(options);
+			  map.setCenter(options.position);
+			}
+			
+			google.maps.event.addDomListener(window, 'load', initialize);
+
+			</script>
+	
+</head>
+<body>
+<div class="container" style="width: 100%; height: 100%">
+<div id="wrapper">
+	<div id="map-canvas" />
+</div>
+<div id="over_map">
+
+		<div id="tacojim" >
+
+		  
+		</div>
+
+		<br />
+		
+	</div>
+</div>
+
+
+
+
+</body> 
+</html>

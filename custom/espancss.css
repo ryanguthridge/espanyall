@@ -1,0 +1,15 @@
+/* 	Espan-yall.com custom CSS shit or whatever
+	Steal it if you want, it's pretty shitty code
+	*/
+
+overmap 
+{ 
+	position: absolute;
+	top: 10px; 
+	left: 10px; 
+	z-index: 99; 
+}
+wrapper 
+{ 
+	position: relative;
+}
