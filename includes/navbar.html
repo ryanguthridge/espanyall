@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#"><img style="padding: 0; margin-left: -15px; margin-top: -15px;" src="images/logo-text.png" /></a>
+      <a class="navbar-brand" href="index.html"><img style="padding: 0; margin-left: -15px; margin-top: -15px;" src="images/logo-text.png" /></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -17,11 +17,12 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Expand Search Area <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="#">1 Mile</a></li>
-            <li><a href="#">3 Miles</a></li>
-            <li><a href="#">5 Miles</a></li>
+            <li><a id="link1" href="?distParam=804">1/2 Mile</a></li>
+            <li><a href="?distParam=1609">1 Mile</a></li>
+            <li><a href="?distParam=4828">3 Miles</a></li>
+            <li><a href="?distParam=8046">5 Miles</a></li>
             <li class="divider"></li>
-            <li><a href="#">Really Far</a></li>
+            <li><a href="?distParam=40233">25 Miles</a></li>
           </ul>
         </li>
       </ul>
@@ -38,3 +39,14 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+
+
+<script type = "text/javascript" >
+	var link1 = document.getElementById("link1");
+	if (typeof window.addEventListener != "undefined") {
+	    link1.addEventListener("click",handleclick,false);
+	} else {
+	    link1.attachEvent("onclick",handleclick);
+	}
+</script>
+

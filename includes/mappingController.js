@@ -1,4 +1,3 @@
-<!-- Google Maps -->
 	// Note: This example requires that you consent to location sharing when
 	// prompted by your browser. If you see a blank space instead of the map, this
 	// is probably because you have denied permission for location sharing.
@@ -9,6 +8,10 @@
 		var infowindow;
 		var request;
 
+		var radiusDistance = location.search.split('distParam=')[1];
+		if(radiusDistance == null){
+			radiusDistance = 4828;
+		}
 
 			function initialize() {
 			directionsDisplay = new google.maps.DirectionsRenderer();
@@ -36,7 +39,7 @@
 			function findTexMex(){
 				var request = {
 				location: pos,				
-				radius: 5000,
+				radius: radiusDistance,
 				types: ['food'],
 				sensor: true,
 				rankby: google.maps.places.RankBy.DISTANCE,
@@ -56,7 +59,9 @@
 					var randomTacoPlace = Math.floor(Math.random() * tacoPlaceResults) - 1;
 					var newEndPoint = results[randomTacoPlace].geometry.location;
 					calcRoute(pos, newEndPoint);
-				}
+				}else{
+			 	$( "#dialog" ).dialog( "open" );
+			 }
 			}
 
 			function createMarker(place) {

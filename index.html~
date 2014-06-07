@@ -35,7 +35,7 @@
 	<!-- Handle link clicks -->
 	<script type="text/javascript">
 		function handleclick() {
-		    
+		    document.write("Clicked");
 		    return false;
 		}
 	</script>
