@@ -9,14 +9,14 @@
 		var tacoData = [];
 		
 		var radiusDistance = 0;
-		
-		if(radiusDistance === null || radiusDistance === "undefined"){
-			radiusDistance = 4828;
-		}
-
+	
 		function initialize() {
 			
 				radiusDistance = location.search.split('distParam=')[1];
+
+				if(radiusDistance === null || radiusDistance === 0){
+							radiusDistance = 4828;
+						}
 				  
 				  if(radiusDistance >= 120701){
 				  	
