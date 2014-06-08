@@ -4,26 +4,51 @@
 		var directionsDisplay;
 		var directionsService = new google.maps.DirectionsService();
 	
-		var map;
-		var infowindow;
-		var request;
-
-		var radiusDistance = location.search.split('distParam=')[1];
-		if(radiusDistance == null){
+		var map, infowindow, request, heatmap, pointarray;
+		
+		var tacoData = [];
+		
+		var radiusDistance = 0;
+		
+		if(radiusDistance === null || radiusDistance === "undefined"){
 			radiusDistance = 4828;
 		}
 
-			function initialize() {
-			directionsDisplay = new google.maps.DirectionsRenderer();
+		function initialize() {
 			
-			  var mapOptions = {
-				zoom: 13
-			  };
-			  map = new google.maps.Map(document.getElementById('map-canvas'),
-				  mapOptions);
-				  directionsDisplay.setMap(map);
-			
-			findCurrentLocation();
+				radiusDistance = location.search.split('distParam=')[1];
+				  
+				  if(radiusDistance >= 120701){
+				  	
+				  	var mapOptions = {
+						zoom: 10,
+						mapTypeId: google.maps.MapTypeId.SATELLITE
+					  };
+					  map = new google.maps.Map(document.getElementById('map-canvas'),
+						  mapOptions);
+						  
+						var pointArray = new google.maps.MVCArray(tacoData);
+						
+						  heatmap = new google.maps.visualization.HeatmapLayer({
+						    data: pointArray
+						  });
+						  
+						  findCurrentLocationForHeatmap();
+						  
+						  
+				  }else{
+				  	
+	   			  	  directionsDisplay = new google.maps.DirectionsRenderer();
+					
+					  var mapOptions = {
+						zoom: 13
+					  };
+					  map = new google.maps.Map(document.getElementById('map-canvas'),
+						  mapOptions);
+						  
+					  directionsDisplay.setMap(map);
+					  findCurrentLocation();
+				  }			
 			}
 
 			function findCurrentLocation(){
@@ -32,6 +57,16 @@
 						 pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 						 map.setCenter(pos);
 						 findTexMex(pos);
+					 });
+				 }
+			}
+			
+			function findCurrentLocationForHeatmap(){
+				if (navigator.geolocation) {
+					 navigator.geolocation.getCurrentPosition(function (position) {
+						 pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+						 map.setCenter(pos);
+						 findTacoPlacesForHeatmap(pos);
 					 });
 				 }
 			}
@@ -49,9 +84,23 @@
 			  var service = new google.maps.places.PlacesService(map);
 			  service.nearbySearch(request, callback);
 			}
+			
+			function findTacoPlacesForHeatmap(){
+				var request = {
+				location: pos,				
+				radius: radiusDistance,
+				types: ['food'],
+				sensor: true,
+				keyword: ['mexican || burrito || taco || azteca || latin']
+			  };
+			  infowindow = new google.maps.InfoWindow();
+			  var service = new google.maps.places.PlacesService(map);
+			  //service.nearbySearch(request, callback);
+			  service.radarSearch(request, callback);
+			}
 
 			function callback(results, status) {					
-				if (status == google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
+				if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0 && radiusDistance < 120701 ) {
 					for (var i = 0; i < results.length; i++) {
 						createMarker(results[i]);
 					}
@@ -59,6 +108,14 @@
 					var randomTacoPlace = Math.floor(Math.random() * tacoPlaceResults) - 1;
 					var newEndPoint = results[randomTacoPlace].geometry.location;
 					calcRoute(pos, newEndPoint);
+					
+				}else if(radiusDistance >= 120701){
+					
+					for (var i = 0; i < results.length; i++) {	
+						tacoData[i] = results[i].geometry.location;
+					}
+					heatmap.setMap(map);
+					
 				}else{
 			 	$( "#dialog" ).dialog( "open" );
 			 }
@@ -90,7 +147,7 @@
 				  travelMode: google.maps.TravelMode.DRIVING
 			  };
 			  directionsService.route(request, function(response, status) {
-				if (status == google.maps.DirectionsStatus.OK) {
+				if (status === google.maps.DirectionsStatus.OK) {
 				  directionsDisplay.setDirections(response);
 				}
 			  });
@@ -114,4 +171,3 @@
 			}
 			
 			google.maps.event.addDomListener(window, 'load', initialize);
-
