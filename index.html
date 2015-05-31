@@ -8,75 +8,102 @@
 	<!-- Custom -->
 	<link rel="stylesheet" type="text/css" href="css/espanyall-master.css"></script>
 	
-	<!-- jQuery -->
-	<script src="jquery/jquery-1.11.1.min.js"></script>
 
-	<!-- jQuery UI -->
-	<script src="jquery-ui/js/jquery-ui-1.10.4.custom.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.min.css"></script>
-	
 	<!-- Boot Strap -->
-	<script src="bootstrap/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css"></script>
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"></script>
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css"></script>
 	
-	<!-- Mapping controller -->
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,visualization&key=AIzaSyCjJpyadaEF7ASmHrLbYrwI5cDF2awQ_Xs&sensor=TRUE">
-    	</script>
-	<script src="includes/mappingController.js"></script>
-
-	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	    <!--[if lt IE 9]>
-	      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	    <![endif]-->
-
-	<!-- Include the NavBar -->
-	<script> 
-	    $(function(){
-	      $("#includedContent").load("includes/navbar.html"); 
-	    });
-	</script>
-	
-	<!-- Handle link clicks -->
-	<script type="text/javascript">
-		function handleclick() { 
-		    return false;
-		}
-	</script>
-
-	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-	  ga('create', 'UA-51726879-1', 'ryanguthridge.com');
-	  ga('send', 'pageview');
-
-	</script>
-
+	<!-- Material Stuff -->
+	<!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
+	<link type="text/css" href="css/roboto.min.css" rel="stylesheet">
+	<link type="text/css" href="css/material.min.css" rel="stylesheet">
+	<link type="text/css" href="css/ripples.min.css" rel="stylesheet">
 </head>
 <body>
+<div class="modal" id="tacoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header panel-info">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalBodyContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button class='btn btn-default' id='findLatLngBtn' onclick='findLatLng();' style='display: none'>Submit Zipcode</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="includedContent"></div>
+	<div class="row">
+		<div id='left-pane' class="col-md-3 col-sm-0">
+		
+			<!-- Interactive shit -->
+			
+			<form class="form-horizontal hidden-xs">
+				<fieldset>
+					<div class="well">
+						<p>Search Area</p>
+						<div id="distanceSlider" class="slider shor slider-material-green"></div>
+						<div id="distanceSliderValue">3 miles</div>
+					</div>
+				</fieldset>
+			</form>
+			
+			<form class="form-horizontal hidden-xs">
+				<fieldset>
+				<div class="well">
+					<div class="form-group">
+						<div class="radio radio-primary">
+							<label>
+								<input type="radio" name="optionsRadios" id="optionsRadios1" value="roadmap" checked="" onclick="radioClick(this);">
+								Road Map
+							</label>
+						</div>
+						<div class="radio radio-primary">
+							<label>
+								<input type="radio" name="optionsRadios" id="optionsRadios2" value="satellite" onclick="radioClick(this);">
+								Satellite
+							</label>
+						</div>				
+					</div>
+				</div>
+				</fieldset>
+			</form>
+			
+			<!-- End of interactive shit -->
 
-		<div id="wrapper">
-			<div id="map-canvas" />
-		</div>
-		<div id="over_map">
-
-		<div id="dialog" title="Dialog Title">No Tacos found! Expand the search area.</div>
-		<script>
-		$( "#dialog" ).dialog({ autoOpen: false });
-		$( "#opener" ).click(function() {
-			$( "#dialog" ).dialog( "open" );
-		});
-		</script>
-
-			<br />
+			<div class="well">
+				<p>Directions</p>
+				<hr>
+				<div id="directionHolder"></div>
+			</div>
 		
 		</div>
+		<div id='right-pane' class="col-md-9">
+			<div id="map-canvas" class="well map-well">
+			
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- jQuery -->
+<script src="jquery/jquery-1.11.1.min.js"></script>
+
+<!-- Boot Strap -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Material Stuff -->
+<script src="js/material.min.js"></script>
+<script src="js/ripples.min.js"></script>
+<script src="js/snackbar.min.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/jquery.liblink.js"></script>
+
+<!-- Mapping controller -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,visualization&key=AIzaSyCjJpyadaEF7ASmHrLbYrwI5cDF2awQ_Xs&sensor=TRUE"></script>
+<script src="includes/mappingController.js"></script>
 
 </body> 
 </html>

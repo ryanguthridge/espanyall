@@ -5,11 +5,16 @@ html
 
 body 
 { 
- height: 100%; margin: 0; padding: 0; 
+ height: 100%; 
+ margin: 0; 
+ padding: 0; 
+ overflow-x: hidden;
+ background-color: #555;
 }
 #map-canvas 
 { 
- height: 100%; position: relative; height: 100%; width: 100%; margin-top: -20px;
+ height: 100%; 
+ position: relative;   
 }
 #over_map 
 { 
@@ -17,7 +22,11 @@ body
 }
 #wrapper 
 { 
- position: relative; height: 100%; width: 100%; z-index: 1; 
+ position: relative; 
+ height: 100%; 
+ width: 100%; 
+ z-index: 1; 
+ margin-left: -19px;
 }
 #tacojim 
 { 
@@ -26,4 +35,33 @@ body
 #container-sizer
 {
  height: 100%; width: 100%;
+}
+#right-pane
+{
+ padding: 0px;
+ padding-right:5px;
+ padding-top: 20px
+}
+#left-pane
+{
+ padding-top: 20px;
+ padding-left: 35px;
+}
+.row
+{
+ margin-top: -20px;
+}
+.newDirectionsLink
+{
+ cursor: pointer;
+ font-weight: bold;
+}
+.map-well
+{
+ padding-bottom: 0px;
+ padding-right: 0px;
+ margin-right: 10px;
+}
+.taco-jim-font{
+ color: black;
 }
